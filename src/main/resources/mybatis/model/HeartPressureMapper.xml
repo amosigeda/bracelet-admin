@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jadmin.mapper.HeartPressureMapper">
+	
+	<resultMap id="BaseResultMap" type="HeartPressure">
+		<id column="hp_id" property="id" jdbcType="INTEGER" />
+		<result column="max_heart_pressure" property="maxHeartPressure" jdbcType="INTEGER" />
+		<result column="min_heart_pressure" property="minHeartPressure" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="imei" property="imei" jdbcType="VARCHAR" />
+		<result column="upload_time" property="uploadTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		hp_id, max_heart_pressure, min_heart_pressure, user_id, imei, upload_time
+	</sql>
+
+	<select id="queryHeartPressureListPage" parameterType="page" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from heart_pressure
+		where 1=1
+		<if test="pd.userId != null and pd.userId != ''">
+			and user_id = #{pd.userId,jdbcType=INTEGER}
+		</if>
+		<if test="pd.imei != null and pd.imei != ''">
+			and imei like '%${pd.imei}%'
+		</if>
+		order by hp_id desc
+	</select>
+
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from heart_pressure
+		where hp_id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<insert id="insert" parameterType="HeartPressure" useGeneratedKeys="true" keyProperty="id">
+		insert into heart_pressure
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				hp_id,
+			</if>
+			<if test="maxHeartPressure != null">
+				max_heart_pressure,
+			</if>
+			<if test="minHeartPressure != null">
+				min_heart_pressure,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="imei != null">
+				imei,
+			</if>
+			<if test="uploadTime != null">
+				upload_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="maxHeartPressure != null">
+				#{maxHeartPressure,jdbcType=INTEGER},
+			</if>
+			<if test="minHeartPressure != null">
+				#{minHeartPressure,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="imei != null">
+				#{imei,jdbcType=VARCHAR},
+			</if>
+			<if test="uploadTime != null">
+				#{uploadTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="update" parameterType="HeartPressure">
+		update heart_pressure
+		<set>
+			<if test="maxHeartPressure != null">
+				max_heart_pressure = #{maxHeartPressure,jdbcType=INTEGER},
+			</if>
+			<if test="minHeartPressure != null">
+				min_heart_pressure = #{minHeartPressure,jdbcType=INTEGER},
+			</if>
+		</set>
+		where hp_id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from heart_pressure
+		where hp_id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+</mapper>

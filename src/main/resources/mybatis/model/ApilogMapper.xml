@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jadmin.mapper.ApilogMapper">
+	
+	<resultMap id="BaseResultMap" type="Apilog">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="req" property="req" jdbcType="VARCHAR" />
+		<result column="resp" property="resp" jdbcType="VARCHAR" />
+		<result column="imei" property="imei" jdbcType="VARCHAR" />
+		<result column="rstatus" property="rstatus" jdbcType="INTEGER" />
+		<result column="rmsg" property="rmsg" jdbcType="VARCHAR" />
+		<result column="time" property="time" jdbcType="INTEGER" />
+		<result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap id="cntMap" type="HashMap">  
+    <result column="rstatus" property="rstatus" jdbcType="VARCHAR" />
+    <result column="cnt" property="cnt" jdbcType="INTEGER" />
+  </resultMap>  
+
+	<sql id="Base_Column_List">
+		id, name, req, resp, imei, rstatus, rmsg, time, createtime
+	</sql>
+
+	<select id="getCntByStatus" resultMap="cntMap">
+		select rstatus, count(id) as cnt from apilog group by rstatus
+	</select>
+
+	<select id="queryApilogListPage" parameterType="page" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from apilog
+		where 1=1
+		<if test="pd.name != null and pd.name != ''">
+			and name like '%${pd.name}%'
+		</if>
+		<if test="pd.imei != null and pd.imei != ''">
+			and imei like '%${pd.imei}%'
+		</if>
+		<if test="pd.rstatus != null and pd.rstatus != ''">
+			and rstatus = #{pd.rstatus,jdbcType=INTEGER}
+		</if>
+		order by id desc
+	</select>
+
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from apilog
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from apilog
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+</mapper>

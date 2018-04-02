@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jadmin.mapper.SmslogMapper">
+	
+	<resultMap id="BaseResultMap" type="Smslog">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="tpl_code" property="tplCode" jdbcType="VARCHAR" />
+		<result column="tpl_param" property="tplParam" jdbcType="VARCHAR" />
+		<result column="rstatus" property="rstatus" jdbcType="INTEGER" />
+		<result column="rmsg" property="rmsg" jdbcType="VARCHAR" />
+		<result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, name, mobile, tpl_code, tpl_param, rstatus, rmsg, createtime
+	</sql>
+
+	<select id="querySmslogListPage" parameterType="page" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from smslog
+		where 1=1
+		<if test="pd.rstatus != null and pd.rstatus != ''">
+			and rstatus = #{pd.rstatus,jdbcType=INTEGER}
+		</if>
+		<if test="pd.mobile != null and pd.mobile != ''">
+			and mobile like '%${pd.mobile}%'
+		</if>
+		order by id desc
+	</select>
+
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from smslog
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from smslog
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+</mapper>

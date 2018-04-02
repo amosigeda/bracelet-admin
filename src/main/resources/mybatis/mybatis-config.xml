@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	
+	<settings> 
+        <setting name="cacheEnabled" value="true" /><!-- 全局映射器启用缓存 -->   
+        <setting name="useGeneratedKeys" value="true" /> 
+        <setting name="defaultExecutorType" value="REUSE" />
+				<setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
+
+	<typeAliases>
+		<typeAlias type="com.jadmin.entity.system.User" alias="User"/>
+		<typeAlias type="com.jadmin.entity.system.Role" alias="Role"/>
+		<typeAlias type="com.jadmin.entity.system.Resource" alias="Resource"/>
+		<typeAlias type="com.jadmin.entity.system.Permission" alias="Permission"/>
+		<typeAlias type="com.jadmin.entity.biz.Customer" alias="Customer"/>
+		<typeAlias type="com.jadmin.entity.biz.HeartPressure" alias="HeartPressure"/>
+		<typeAlias type="com.jadmin.entity.biz.HeartRate" alias="HeartRate"/>
+		<typeAlias type="com.jadmin.entity.biz.Location" alias="Location"/>
+		<typeAlias type="com.jadmin.entity.biz.Apilog" alias="Apilog"/>
+		<typeAlias type="com.jadmin.entity.biz.Callinfo" alias="Callinfo"/>
+		<typeAlias type="com.jadmin.entity.biz.Feedback" alias="Feedback"/>
+		<typeAlias type="com.jadmin.entity.biz.Pushlog" alias="Pushlog"/>
+		<typeAlias type="com.jadmin.entity.biz.Smslog" alias="Smslog"/>
+		<typeAlias type="com.jadmin.entity.biz.Soslog" alias="Soslog"/>
+		<typeAlias type="com.jadmin.entity.biz.Step" alias="Step"/>
+		<typeAlias type="com.jadmin.entity.biz.Conf" alias="Conf"/>
+		<typeAlias type="com.jadmin.entity.biz.Sys" alias="Sys"/>
+		<typeAlias type="com.jadmin.entity.biz.Voltage" alias="Voltage"/>
+		<typeAlias type="com.jadmin.entity.biz.BloodSugar" alias="BloodSugar"/>
+		<typeAlias type="com.jadmin.entity.biz.BloodOxygen" alias="BloodOxygen"/>
+		<typeAlias type="com.jadmin.entity.biz.BloodOxygen" alias="BloodOxygen"/>
+	    <typeAlias type="com.jadmin.entity.biz.Frequency" alias="Frequency"/>
+	    <typeAlias type="com.jadmin.entity.biz.OddShape" alias="OddShape"/>
+	    <typeAlias type="com.jadmin.entity.biz.Fence" alias="Fence"/>
+	     <typeAlias type="com.jadmin.entity.biz.SafeArea" alias="SafeArea"/>
+	   <!--   <typeAlias type="com.jadmin.entity.biz.SafeArea" alias="safe_area"/> -->
+
+		<typeAlias type="com.jadmin.util.PageData" alias="pd"/>
+		<!-- 分页 -->
+		<typeAlias type="com.jadmin.entity.Page" alias="page"/>
+	</typeAliases>
+	
+	<plugins>
+		<plugin interceptor="com.jadmin.plugin.PagePlugin">
+			<property name="dialect" value="mysql"/>
+			<property name="pageSqlId" value=".*Page.*"/>
+		</plugin>
+	</plugins>
+	
+</configuration>

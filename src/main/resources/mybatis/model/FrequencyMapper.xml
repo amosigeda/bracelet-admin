@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jadmin.mapper.FrequencyMapper">
+	
+	<resultMap id="BaseResultMap" type="Frequency">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="frequency_time" property="frequency_time" jdbcType="INTEGER" />
+		<result column="create_time" property="create_time" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="update_time" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, type, frequency_time, create_time, update_time
+	</sql>
+
+	<select id="queryUserListPage" parameterType="page" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from location_frequency_contorller
+		where 1=1
+		<!-- <if test="pd.id != null and pd.id != ''">
+			and id like '%${pd.id}%'
+		</if>
+		<if test="pd.imei != null and pd.imei != ''">
+			and imei like '%${pd.imei}%'
+		</if> -->
+		order by id desc
+	</select>
+	
+	
+		<select id="queryXinListPage" parameterType="page" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from heart_frequency_contorller
+		where 1=1
+		<!-- <if test="pd.id != null and pd.id != ''">
+			and id like '%${pd.id}%'
+		</if>
+		<if test="pd.imei != null and pd.imei != ''">
+			and imei like '%${pd.imei}%'
+		</if> -->
+	</select>
+
+	<select id="queryUserList" parameterType="pd" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from location_frequency_contorller
+	</select>
+
+	<select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from location_frequency_contorller
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	
+<select id="getByXinUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from heart_frequency_contorller
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from location_frequency_contorller
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="validateUserName" parameterType="pd" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from location_frequency_contorller
+		where 1=1
+		<if test="userId != null and userId != ''">
+			and user_id != #{userId,jdbcType=INTEGER}
+		</if>
+			and id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<insert id="insert" parameterType="Customer" useGeneratedKeys="true" keyProperty="userId">
+		insert into location_frequency_contorller
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="id != null">
+				id,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="dv != null">
+				dv,
+			</if>
+			<if test="sd != null">
+				sd,
+			</if>
+			<if test="imei != null">
+				imei,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+			<if test="bindingtime != null">
+				bindingtime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="dv != null">
+				#{dv,jdbcType=VARCHAR},
+			</if>
+			<if test="sd != null">
+				#{sd,jdbcType=VARCHAR},
+			</if>
+			<if test="imei != null">
+				#{imei,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="bindingtime != null">
+				#{bindingtime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="update" parameterType="Customer">
+		update location_frequency_contorller
+		<set>
+			<if test="id != null">
+				frequency_time = #{frequency_time,jdbcType=INTEGER},
+			</if>
+			
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	
+		<update id="updateXin" parameterType="Customer">
+		update heart_frequency_contorller
+		<set>
+			<if test="id != null">
+				frequency_time = #{frequency_time,jdbcType=INTEGER},
+			</if>
+			
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteByUserId" parameterType="java.lang.Integer">
+		delete from location_frequency_contorller
+		where user_id = #{userId,jdbcType=INTEGER}
+	</delete>
+	
+</mapper>

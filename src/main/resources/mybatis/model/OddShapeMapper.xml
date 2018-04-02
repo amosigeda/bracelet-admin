@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jadmin.mapper.OddShapeMapper">
+	
+	<resultMap id="BaseResultMap" type="OddShape">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="user_id" jdbcType="INTEGER" />
+		<result column="point" property="point" jdbcType="VARCHAR" />
+     	<result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+	   <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, user_id, point, createtime, updatetime, name, type
+	</sql>
+
+	<select id="queryUserListPage" parameterType="page" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from odd_shape
+		where 1=1
+		<if test="pd.name != null and pd.name != ''">
+			and name like '%${pd.name}%'
+		</if>
+		<if test="pd.user_id != null and pd.user_id != ''">
+			and user_id like '%${pd.user_id}%'
+		</if>
+		<if test="pd.type != null and pd.type  != ''">
+			and type  like '%${pd.type}%'
+		</if>
+		order by id desc
+	</select>
+
+	<select id="queryUserList" parameterType="pd" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from odd_shape
+	</select>
+
+	<select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from odd_shape
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from odd_shape
+		where name = #{name,jdbcType=VARCHAR}
+	</select>
+
+	<select id="validateUserName" parameterType="pd" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from odd_shape
+		where 1=1
+		<if test="user_id != null and user_id != ''">
+			and user_id != #{user_id,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<insert id="insert" parameterType="OddShape" useGeneratedKeys="true" keyProperty="id">
+		insert into odd_shape
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="user_id != null">
+				user_id,
+			</if>
+			<if test="point != null">
+				point,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="user_id != null">
+				#{user_id,jdbcType=INTEGER},
+			</if>
+			<if test="point != null">
+				#{point,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="update" parameterType="Customer">
+		update odd_shape
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteByUserId" parameterType="java.lang.Integer">
+		delete from odd_shape
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jadmin.mapper.PushlogMapper">
+	
+	<resultMap id="BaseResultMap" type="Pushlog">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="imei" property="imei" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="target" property="target" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, user_id, imei, type, target, title, content, createtime
+	</sql>
+
+	<select id="queryPushlogListPage" parameterType="page" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from pushlog
+		where 1=1
+		<if test="pd.userId != null and pd.userId != ''">
+			and user_id = #{pd.userId,jdbcType=INTEGER}
+		</if>
+		<if test="pd.imei != null and pd.imei != ''">
+			and imei like '%${pd.imei}%'
+		</if>
+		order by id desc
+	</select>
+
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from pushlog
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from pushlog
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+</mapper>

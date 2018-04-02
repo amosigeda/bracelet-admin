@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jadmin.mapper.FenceMapper">
+	
+	<resultMap id="BaseResultMap" type="Fence">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="user_id" jdbcType="INTEGER" />
+		<result column="lat" property="lat" jdbcType="VARCHAR" />
+		<result column="lng" property="lng" jdbcType="VARCHAR" />
+		<result column="radius" property="radius" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+     	<result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+	   <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, user_id, lat,lng,radius,status, createtime, updatetime
+	</sql>
+
+	<select id="queryUserListPage" parameterType="page" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from fence
+		where 1=1
+		<if test="pd.user_id != null and pd.user_id != ''">
+			and user_id like '%${pd.user_id}%'
+		</if>
+		
+		order by id desc
+	</select>
+
+	<select id="queryUserList" parameterType="pd" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from fence
+	</select>
+
+	<select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from fence
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from fence
+		where lat = #{lat,jdbcType=VARCHAR}
+	</select>
+
+	<select id="validateUserName" parameterType="pd" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from fence
+		where 1=1
+		<if test="user_id != null and user_id != ''">
+			and user_id != #{user_id,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<insert id="insert" parameterType="Fence" useGeneratedKeys="true" keyProperty="id">
+		insert into fence
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="user_id != null">
+				user_id,
+			</if>
+			<if test="lat != null">
+				lat,
+			</if>
+			<if test="lng != null">
+				lng,
+			</if>
+			<if test="radius != null">
+				radius,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+			<if test="updatetime != null">
+				updatetime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="user_id != null">
+				#{user_id,jdbcType=INTEGER},
+			</if>
+			<if test="lat != null">
+				#{lat,jdbcType=VARCHAR},
+			</if>
+			<if test="lng != null">
+				#{lng,jdbcType=VARCHAR},
+			</if>
+			<if test="radius != null">
+				#{radius,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatetime != null">
+				#{updatetime,jdbcType=TIMESTAMP},
+			</if>
+			
+		</trim>
+	</insert>
+	
+	<update id="update" parameterType="Customer">
+		update fence
+		<set>
+			<if test="radius != null">
+				radius = #{radius,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteByUserId" parameterType="java.lang.Integer">
+		delete from fence
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+</mapper>
